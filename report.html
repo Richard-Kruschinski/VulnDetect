@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><title>VulnDetect Scan Report</title>
+<style>body{font-family:Arial,Helvetica,sans-serif;margin:20px}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px}th{background:#f4f4f4;text-align:left}</style>
+</head>
+<body>
+<h1>VulnDetect Scan Report</h1>
+<p>Generated: 2025-12-08T21:12:55.249086Z</p>
+<h2>Summary</h2>
+<ul>
+<li><strong>insecure_headers</strong>: 5</li>
+<li><strong>xss</strong>: 0</li>
+<li><strong>sqli</strong>: 0</li>
+<li><strong>password_policy</strong>: 1</li>
+<li><strong>directory_traversal</strong>: 0</li>
+<li><strong>session_management</strong>: 0</li>
+<li><strong>rate_limiting</strong>: 11</li>
+<li><strong>csrf</strong>: 1</li>
+</ul>
+<h2>insecure_headers</h2>
+<table>
+<tr><th>Key</th><th>Value</th></tr>
+<tr><td>X-Content-Type-Options</td><td>{&#x27;present&#x27;: False, &#x27;value&#x27;: None}</td></tr>
+<tr><td>X-Frame-Options</td><td>{&#x27;present&#x27;: False, &#x27;value&#x27;: None}</td></tr>
+<tr><td>Content-Security-Policy</td><td>{&#x27;present&#x27;: False, &#x27;value&#x27;: None}</td></tr>
+<tr><td>Strict-Transport-Security</td><td>{&#x27;present&#x27;: False, &#x27;value&#x27;: None}</td></tr>
+<tr><td>X-XSS-Protection</td><td>{&#x27;present&#x27;: False, &#x27;value&#x27;: None}</td></tr>
+</table>
+<h2>xss</h2>
+<table>
+<tr><th>Key</th><th>Value</th></tr>
+<tr><td>reflected</td><td>[]</td></tr>
+<tr><td>stored</td><td>[]</td></tr>
+</table>
+<h2>sqli</h2>
+<p>No findings.</p>
+<h2>password_policy</h2>
+<table>
+<tr><th>Key</th><th>Value</th></tr>
+<tr><td>forms</td><td>[]</td></tr>
+<tr><td>overall_weak_allowed</td><td>False</td></tr>
+</table>
+<h2>directory_traversal</h2>
+<p>No findings.</p>
+<h2>session_management</h2>
+<table>
+<tr><th>Key</th><th>Value</th></tr>
+</table>
+<h2>rate_limiting</h2>
+<table>
+<tr><th>Key</th><th>Value</th></tr>
+<tr><td>attempts</td><td>10</td></tr>
+<tr><td>status_codes</td><td>[403, 403, 403, 403, 403, 403, 403, 403, 403, 403]</td></tr>
+</table>
+<h2>csrf</h2>
+<table>
+<tr><th>Key</th><th>Value</th></tr>
+<tr><td>forms_missing_token</td><td>[]</td></tr>
+<tr><td>csrf_headers</td><td>{&#x27;x-csrf-token&#x27;: None, &#x27;x-requested-with&#x27;: None}</td></tr>
+</table>
+</body></html>

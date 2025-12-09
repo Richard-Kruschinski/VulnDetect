@@ -1,0 +1,5 @@
+{
+  "timeout": 10,
+  "max_token_lifetime_seconds": 3600,
+  "allowed_algorithms": ["HS256", "RS256"]
+}

@@ -1,11 +1,6 @@
-"""Unit tests for the WASS scanner.
-
-These tests use `unittest.mock` to patch network calls so they run quickly
-without external network access.
-"""
 import unittest
 from unittest.mock import patch, Mock
-from scanner import WebAppScanner
+from src.scanner import WebAppScanner
 
 
 class TestScanner(unittest.TestCase):
@@ -14,7 +9,7 @@ class TestScanner(unittest.TestCase):
         self.url = "http://example.com/page?search=hello&id=1"
         self.scanner = WebAppScanner(self.url)
 
-    @patch("utils.requests.Session.get")
+    @patch("src.utils.requests.Session.get")
     def test_check_insecure_headers(self, mock_get):
         mock_resp = Mock()
         mock_resp.headers = {"X-Frame-Options": "DENY"}
@@ -25,10 +20,8 @@ class TestScanner(unittest.TestCase):
         self.assertTrue(res["X-Frame-Options"]["present"])
         self.assertEqual(res["X-Frame-Options"]["value"], "DENY")
 
-    @patch("utils.requests.Session.get")
+    @patch("src.utils.requests.Session.get")
     def test_check_xss_reflected(self, mock_get):
-        # Set up a side effect that returns an injected response when the payload
-        # appears in the requested URL (or params), otherwise return a base page.
         base_resp = Mock()
         base_resp.text = "<html></html>"
         base_resp.headers = {}
@@ -38,11 +31,9 @@ class TestScanner(unittest.TestCase):
         xss_resp.text = f"<html>{xss_payload}</html>"
 
         def side_effect(*args, **kwargs):
-            # args[0] will be the URL passed to get
             for a in args:
                 if isinstance(a, str) and xss_payload in a:
                     return xss_resp
-            # also check params
             params = kwargs.get("params")
             if params and any(xss_payload in str(v) for v in params.values()):
                 return xss_resp
@@ -53,19 +44,17 @@ class TestScanner(unittest.TestCase):
         findings = self.scanner.check_xss()
         self.assertIsInstance(findings, dict)
 
-    @patch("utils.requests.Session.get")
+    @patch("src.utils.requests.Session.get")
     def test_check_sqli_detects_error(self, mock_get):
         base = Mock()
         base.text = "normal page content"
         base.headers = {}
 
-        # Injected response containing a SQL error message
         inj = Mock()
         inj.text = "You have an error in your SQL syntax near..."
         inj.headers = {}
 
         def side_effect(*args, **kwargs):
-            # if any payload-like characters are in the URL or params, return inj
             for a in args:
                 if isinstance(a, str) and ("'" in a or " OR " in a or "--" in a):
                     return inj
@@ -79,9 +68,8 @@ class TestScanner(unittest.TestCase):
         findings = self.scanner.check_sqli()
         self.assertTrue(isinstance(findings, list))
 
-    @patch("utils.requests.Session.get")
+    @patch("src.utils.requests.Session.get")
     def test_check_password_policy(self, mock_get):
-        # Create a page with a simple password form lacking minlength
         html = '<form action="/login" method="post"><input type="password" name="pw"></form>'
         resp = Mock()
         resp.text = html
@@ -95,7 +83,7 @@ class TestScanner(unittest.TestCase):
         r = WebAppScanner.analyze_password_strength("Pa$$w0rd1")
         self.assertIn("verdict", r)
 
-    @patch("utils.requests.Session.get")
+    @patch("src.utils.requests.Session.get")
     def test_run_all_checks_returns_report(self, mock_get):
         base = Mock()
         base.text = "<html></html>"
@@ -104,7 +92,6 @@ class TestScanner(unittest.TestCase):
 
         report = self.scanner.run_all_checks()
         self.assertIsInstance(report, dict)
-        # Ensure top-level keys exist
         self.assertIn("insecure_headers", report)
         self.assertIn("xss", report)
         self.assertIn("sqli", report)

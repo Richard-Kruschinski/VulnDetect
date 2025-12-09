@@ -1,0 +1,69 @@
+{
+  "insecure_headers": {
+    "X-Content-Type-Options": {
+      "present": false,
+      "value": null
+    },
+    "X-Frame-Options": {
+      "present": false,
+      "value": null
+    },
+    "Content-Security-Policy": {
+      "present": true,
+      "value": "child-src 'self' hackthissite.org *.hackthissite.org htscdn.org *.htscdn.org discord.com; form-action 'self' hackthissite.org *.hackthissite.org htscdn.org *.htscdn.org; upgrade-insecure-requests; report-uri https://hackthissite.report-uri.com/r/d/csp/enforce"
+    },
+    "Strict-Transport-Security": {
+      "present": true,
+      "value": "max-age=31536000; includeSubDomains; preload"
+    },
+    "X-XSS-Protection": {
+      "present": true,
+      "value": "0"
+    }
+  },
+  "xss": {
+    "reflected": [],
+    "stored": []
+  },
+  "sqli": [],
+  "password_policy": {
+    "forms": [
+      {
+        "input": "password",
+        "minlength": null,
+        "pattern": null,
+        "weak_allowed": true
+      }
+    ],
+    "overall_weak_allowed": true
+  },
+  "directory_traversal": [],
+  "session_management": {},
+  "rate_limiting": {
+    "attempts": 10,
+    "status_codes": [
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200
+    ]
+  },
+  "csrf": {
+    "forms_missing_token": [
+      {
+        "action": "https://www.hackthissite.org/user/login",
+        "method": "post"
+      }
+    ],
+    "csrf_headers": {
+      "x-csrf-token": null,
+      "x-requested-with": null
+    }
+  }
+}

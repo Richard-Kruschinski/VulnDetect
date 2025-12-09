@@ -1,38 +1,44 @@
-# Web Application Security Scanner (WASS)
+# VulnDetect — Web Application Security Scanner (WASS)
 
-Simple Python-based scanner that performs basic checks for SQL Injection, XSS, insecure HTTP headers, and password strength checks.
+VulnDetect is a lightweight web application security scanner that checks for common issues such as SQL Injection, XSS, insecure HTTP headers, weak password policies, directory traversal, session management issues, rate-limiting weaknesses and missing CSRF protections.
 
-Files:
-- `scanner.py` — main scanner implementation and CLI
-- `utils.py` — HTTP helpers and HTML form parsing
-- `tests.py` — unit tests using `unittest` and mocks
-- `requirements.txt` — external dependencies
+Repository layout:
 
-Quick start:
+- `src/` — package code
+	- `src/scanner.py` — main scanner
+	- `src/webapp_scanner.py` — extra security checks (directory traversal, session, rate-limiting, CSRF)
+	- `src/utils.py` — HTTP client and form helpers
+	- `src/config.py` — configuration loader for `config.json`
+	- `src/report.py` — JSON and HTML report generation
+	- `src/cli.py` — CLI entrypoint using `argparse`
+- `tests/` — unit tests using `unittest` + `unittest.mock`
+- `config.json` — default scanner configuration
+- `requirements.txt` — Python dependencies (`requests`, `beautifulsoup4`)
 
-1. Create a virtualenv and install dependencies:
+Quick start (PowerShell):
 
 ```powershell
 python -m venv .venv; .\.venv\Scripts\Activate.ps1; pip install -r requirements.txt
 ```
 
-2. Run scanner from CLI:
+Run the scanner from the package CLI (writes nothing by default):
 
 ```powershell
-python scanner.py "http://example.com/page?param=1"
+python -m src.cli "http://example.com/page?param=1"
 ```
 
-You can also write a JSON report to a file using `--json`:
+Write JSON and/or HTML reports:
 
 ```powershell
-python scanner.py "http://example.com/page?param=1" --json report.json
+python -m src.cli "http://example.com/page?param=1" -j report.json -H report.html
 ```
 
-3. Run tests:
+Run the test-suite (discovery will run tests in `tests`):
 
 ```powershell
-python -m unittest tests.py
+python -m unittest discover -v -s tests -p "test_*.py"
 ```
 
 Notes:
-- This project provides simple heuristic checks and is intended as an educational starting point, not a production-grade scanner.
+- Tests use `unittest.mock` to patch network calls so they run offline and quickly.
+- The HTML report is a simple tabular summary suitable for quick review.
